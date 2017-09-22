@@ -147,4 +147,36 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLF.setPower(0);
         bot.motorLB.setPower(0);
     }
+
+    public void go(double targetX, double targetY){
+        double a;
+        double b;
+        double c;
+
+        double y;
+        double x;
+        double z;
+
+        double p = .01; //correction factor;
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN){
+            a = targetX - bot.tX;
+            b = targetY - bot.tY;
+            c = Math.sqrt(a*a+b*b);
+
+            y = a/c;
+            x= b/c;
+            z= bot.rX * p;
+
+            bot.motorLF.setPower(y+x-z);
+            bot.motorRF.setPower(y-x+z);
+            bot.motorRB.setPower(y-x-z);
+            bot.motorLB.setPower(y+x+z);
+
+            checkVu();
+        }
+
+
+    }
+
 }
