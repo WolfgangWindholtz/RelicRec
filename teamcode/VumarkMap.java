@@ -6,7 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
  * Created by wolfie on 9/16/17.
@@ -14,6 +17,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 public class VumarkMap {
     HardwareMap hwMap = null;
+
+    int cameraMonitorViewId;
+    VuforiaTrackables relicTrackables;
+    VuforiaTrackable relicTemplate;
+
+    RelicRecoveryVuMark columnToScore;
+
+    double tX;
+    double tY;
+    double tZ;
+
+    double rX;
+    double rY;
+    double rZ;
 
 
     VuforiaLocalizer vuforia;

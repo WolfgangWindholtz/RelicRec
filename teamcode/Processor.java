@@ -28,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -168,15 +169,23 @@ public abstract class Processor extends LinearOpMode {
             x= b/c;
             z= bot.rX * p;
 
-            bot.motorLF.setPower(y+x-z);
-            bot.motorRF.setPower(y-x+z);
-            bot.motorRB.setPower(y-x-z);
-            bot.motorLB.setPower(y+x+z);
+            bot.motorLF.setPower(Range.clip(y+x-z,-1,1));
+            bot.motorRF.setPower(Range.clip(y-x+z,-1,1));
+            bot.motorRB.setPower(Range.clip(y-x-z,-1,1));
+            bot.motorLB.setPower(Range.clip(y+x+z,-1,1));
 
             checkVu();
+            if (Math.abs(targetX)<1&& Math.abs(targetY)<1){
+                break;
+            }
         }
 
+        bot.motorLF.setPower(0);
+        bot.motorRF.setPower(0);
+        bot.motorRB.setPower(0);
+        bot.motorLB.setPower(0);
 
     }
+
 
 }
