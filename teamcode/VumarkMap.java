@@ -48,5 +48,8 @@ public class VumarkMap {
         param.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(param);
 
+        //relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+        //relicTemplate = relicTrackables.get(0);
+        //relicTemplate.setName("relicVuMarkTemplate");
     }
 }

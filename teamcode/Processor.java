@@ -72,6 +72,9 @@ public abstract class Processor extends LinearOpMode {
             bot.tY = trans.get(1);
             bot.tZ = trans.get(2);
 
+            // X = vertical axis
+            // Y = horizonatal Axis
+            // Z = Depth Axis
             // Extract the rotational components of the target relative to the robot
             bot.rX = rot.firstAngle;
             bot.rY = rot.secondAngle;
@@ -80,15 +83,15 @@ public abstract class Processor extends LinearOpMode {
         else {
             telemetry.addData("VuMark", "not visible");
         }
-
+        bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
         telemetry.update();
     }
     public void checkCol(){
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-            telemetry.addData("VuMark", "%s visible", vuMark);
+        checkVu();
+        if (bot.vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            telemetry.addData("VuMark", "%s visible", bot.vuMark);
 
-            bot.columnToScore = vuMark;
+            bot.columnToScore = bot.vuMark;
         }
         else {
             telemetry.addData("VuMark", "not visible");
@@ -136,12 +139,14 @@ public abstract class Processor extends LinearOpMode {
     }
     // THIS SHOULD BE A STATE
     public void faceImage(){
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        if(vuMark == RelicRecoveryVuMark.UNKNOWN){
+        checkVu();
+        while(bot.vuMark == RelicRecoveryVuMark.UNKNOWN){
+            bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
             bot.motorRB.setPower(.5);
             bot.motorRF.setPower(.5);
             bot.motorLF.setPower(.5);
             bot.motorLB.setPower(.5);
+            checkVu();
         }
         bot.motorRB.setPower(0);
         bot.motorRF.setPower(0);
@@ -161,8 +166,8 @@ public abstract class Processor extends LinearOpMode {
 
 
         double p = .01; //correction factor;
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN){
+        bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
+        while(bot.vuMark == RelicRecoveryVuMark.UNKNOWN){
             a = targetY - bot.tY;
             b = targetZ - bot.tZ;
             c = Math.sqrt(a*a+b*b);
@@ -171,7 +176,7 @@ public abstract class Processor extends LinearOpMode {
 
             y = a/c;
             x= b/c;
-            z= ((bot.rZ*Math.PI/180)+(angleV1));
+            z= ((bot.rY*Math.PI/180)+(angleV1));
 
             bot.motorLF.setPower(Range.clip(y+x-z,-1,1));
             bot.motorRF.setPower(Range.clip(y-x+z,-1,1));
@@ -179,6 +184,7 @@ public abstract class Processor extends LinearOpMode {
             bot.motorLB.setPower(Range.clip(y+x+z,-1,1));
 
             checkVu();
+
             if (Math.abs(targetY)<1&& Math.abs(targetZ)<1){
                 break;
             }

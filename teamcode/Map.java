@@ -84,6 +84,8 @@ public class Map {
     double rX;
     double rY;
     double rZ;
+    RelicRecoveryVuMark vuMark;
+
 
 
     VuforiaLocalizer vuforia;
@@ -97,8 +99,8 @@ public class Map {
         motorLF = hwMap.dcMotor.get("motorLF");
         motorRF = hwMap.dcMotor.get("motorRF");
         motorRB = hwMap.dcMotor.get("motorRB");
-        motorLB.setDirection(DcMotor.Direction.REVERSE);
-        motorRF.setDirection(DcMotor.Direction.REVERSE);
+        //motorLB.setDirection(DcMotor.Direction.REVERSE);
+        //^^^^^^^^^^^^^^^^^^^^^^^^^R^RmotorRF.setDirection(DcMotor.Direction.REVERSE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -124,6 +126,9 @@ public class Map {
         relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate");
 
+        relicTrackables.activate();
+
+        vuMark = RelicRecoveryVuMark.from(relicTemplate);
     }
 }
 

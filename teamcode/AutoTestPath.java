@@ -7,16 +7,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 /**
  * Created by wolfie on 9/23/17.
  */
-@Autonomous(name = "Concept: eeeeee Id", group ="Concept")
+@Autonomous(name = "Auto 1", group ="Concept")
 
 public class AutoTestPath extends Processor{
 
     @Override
     public void runOpMode() throws InterruptedException {
+        bot.init(hardwareMap);
         waitForStart();
 
         faceImage();
         checkVu();
-        go(-20,-20);
+        go(-200,-200);
     }
 }
