@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 /**
  * Created by wolfie on 9/15/17.
  */
-@TeleOp(name = "XTele", group = "X")
+@TeleOp(name = "XbadTele", group = "X")
 public class Tele extends OpMode{
     Map robot = new Map();
     double lefty;

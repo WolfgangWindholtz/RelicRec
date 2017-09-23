@@ -149,7 +149,7 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLB.setPower(0);
     }
 
-    public void go(double targetX, double targetY){
+    public void go(double targetY, double targetZ){
         double a;
         double b;
         double c;
@@ -157,17 +157,21 @@ public abstract class Processor extends LinearOpMode {
         double y;
         double x;
         double z;
+        double angleV1;
+
 
         double p = .01; //correction factor;
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
         while(vuMark == RelicRecoveryVuMark.UNKNOWN){
-            a = targetX - bot.tX;
-            b = targetY - bot.tY;
+            a = targetY - bot.tY;
+            b = targetZ - bot.tZ;
             c = Math.sqrt(a*a+b*b);
+
+            angleV1 = Math.atan((bot.tZ/bot.tY));
 
             y = a/c;
             x= b/c;
-            z= bot.rX * p;
+            z= ((bot.rZ*Math.PI/180)+(angleV1));
 
             bot.motorLF.setPower(Range.clip(y+x-z,-1,1));
             bot.motorRF.setPower(Range.clip(y-x+z,-1,1));
@@ -175,7 +179,7 @@ public abstract class Processor extends LinearOpMode {
             bot.motorLB.setPower(Range.clip(y+x+z,-1,1));
 
             checkVu();
-            if (Math.abs(targetX)<1&& Math.abs(targetY)<1){
+            if (Math.abs(targetY)<1&& Math.abs(targetZ)<1){
                 break;
             }
         }
