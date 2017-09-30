@@ -142,10 +142,10 @@ public abstract class Processor extends LinearOpMode {
         checkVu();
         while(bot.vuMark == RelicRecoveryVuMark.UNKNOWN){
             bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-            bot.motorRB.setPower(.5);
-            bot.motorRF.setPower(.5);
-            bot.motorLF.setPower(.5);
-            bot.motorLB.setPower(.5);
+            bot.motorRB.setPower(.1);
+            bot.motorRF.setPower(.1);
+            bot.motorLF.setPower(.1);
+            bot.motorLB.setPower(.1);
             checkVu();
         }
         bot.motorRB.setPower(0);
@@ -176,7 +176,7 @@ public abstract class Processor extends LinearOpMode {
 
             y = a/c;
             x= b/c;
-            z= ((bot.rY*Math.PI/180)+(angleV1));
+            z= p*((bot.rY*Math.PI/180)+(angleV1));
 
             bot.motorLF.setPower(Range.clip(y+x-z,-1,1));
             bot.motorRF.setPower(Range.clip(y-x+z,-1,1));
@@ -185,7 +185,7 @@ public abstract class Processor extends LinearOpMode {
 
             checkVu();
 
-            if (Math.abs(targetY)<1&& Math.abs(targetZ)<1){
+            if (Math.abs(a)<(10)&& Math.abs(b)<(10)){
                 break;
             }
         }

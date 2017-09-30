@@ -10,8 +10,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AutoPathfacetest extends Processor{
     @Override
     public void runOpMode() throws InterruptedException {
-        waitForStart();
         bot.init(hardwareMap);
+        checkVu();
+        waitForStart();
+
+
+
 
         faceImage();
     }

@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "XbadTele", group = "X")
 public class Tele extends OpMode{
     Map robot = new Map();
-    double lefty;
-    double righty;
-    double leftx;
+    double xpow;
+    double ypow;
+    double zpow;
     double rightx;
 
     @Override
@@ -21,14 +21,14 @@ public class Tele extends OpMode{
 
     @Override
     public void loop() {
-        leftx = gamepad1.left_stick_x;
-        lefty = gamepad1.left_stick_y;
-        rightx = gamepad1.right_stick_x;
-        righty = gamepad1.right_stick_y;
-        robot.motorLB.setPower(leftx);
-        robot.motorLF.setPower(lefty);
-        robot.motorRB.setPower(righty);
-        robot.motorRF.setPower(rightx);
+        xpow = gamepad1.left_stick_x;
+        ypow = gamepad1.left_stick_y;
+        zpow = gamepad1.right_stick_x;
+
+        robot.motorLF.setPower(ypow+xpow-zpow);
+        robot.motorRF.setPower(ypow-xpow+zpow);
+        robot.motorRB.setPower(ypow-xpow-zpow);
+        robot.motorLB.setPower(ypow+xpow+zpow);
 
     }
 }
