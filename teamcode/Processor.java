@@ -164,10 +164,12 @@ public abstract class Processor extends LinearOpMode {
         double z;
         double angleV1;
 
+        a = targetY - bot.tY;
+        b = targetZ - bot.tZ;
 
         double p = .01; //correction factor;
         bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        while(bot.vuMark == RelicRecoveryVuMark.UNKNOWN){
+        while(Math.abs(a)>(10)|| Math.abs(b)>(10)){
             a = targetY - bot.tY;
             b = targetZ - bot.tZ;
             c = Math.sqrt(a*a+b*b);
@@ -178,10 +180,10 @@ public abstract class Processor extends LinearOpMode {
             x= b/c;
             z= p*((bot.rY*Math.PI/180)+(angleV1));
 
-            bot.motorLF.setPower(Range.clip(y+x-z,-1,1));
-            bot.motorRF.setPower(Range.clip(y-x+z,-1,1));
-            bot.motorRB.setPower(Range.clip(y-x-z,-1,1));
-            bot.motorLB.setPower(Range.clip(y+x+z,-1,1));
+            bot.motorLF.setPower(Range.clip((-y-x-z)/2,-1,1));
+            bot.motorRF.setPower(Range.clip((y-x-z)/2,-1,1));
+            bot.motorRB.setPower(Range.clip((y+x-z)/2,-1,1));
+            bot.motorLB.setPower(Range.clip((-y+x-z)/2,-1,1));
 
             checkVu();
 
@@ -196,6 +198,48 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLB.setPower(0);
 
     }
+
+        public void goToTarget(double x, double y)
+        {
+
+            double[] angle = new double[18];
+
+            for(int j= 0;j<angle.length;j++)
+            {
+                angle[j] = .0559*j;
+            }
+
+            while((bot.tZ!=x+10)||(bot.tZ)!=y+10) {
+
+                double robotTranslationZ = bot.tZ;
+                double robotTranslationY = bot.tY;
+
+                double yCoordinate = y - robotTranslationY;
+                double xCoordinate = x - robotTranslationZ;
+
+                double angleV1 = Math.atan((bot.tZ/bot.tY));
+                if(bot.tZ<0)
+                {
+                    angleV1 += 180;
+                }
+
+                double speedA = 0.5;
+                double speedZ = 0;
+
+                if(angleV1>3&&angleV1<16)
+                {
+                    speedZ = angle[(int)(angleV1)];
+                }
+
+                double speedB = ((speedA * (yCoordinate - xCoordinate)) / (yCoordinate + xCoordinate));
+
+                bot.motorRF.setPower((speedA+speedZ));
+                bot.motorLB.setPower(-(speedA-speedZ));
+                bot.motorLF.setPower(-(speedB-speedZ));
+                bot.motorRB.setPower((speedB+speedZ));
+
+            }
+        }
 
 
 }
