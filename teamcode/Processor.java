@@ -164,6 +164,7 @@ public abstract class Processor extends LinearOpMode {
         double z;
         double angleV1;
 
+        double powerCorrection;
         a = targetY - bot.tY;
         b = targetZ - bot.tZ;
 
@@ -174,16 +175,18 @@ public abstract class Processor extends LinearOpMode {
             b = targetZ - bot.tZ;
             c = Math.sqrt(a*a+b*b);
 
-            angleV1 = Math.atan((bot.tZ/bot.tY));
+            powerCorrection = c*.001;
 
-            y = a/c;
+            angleV1 = Math.atan((bot.tY/bot.tZ));
+
+            y = -a/c;
             x= b/c;
-            z= p*((bot.rY*Math.PI/180)+(angleV1));
+            z= p*((bot.rY*Math.PI/180)-(angleV1));
 
-            bot.motorLF.setPower(Range.clip((-y-x-z)/2,-1,1));
-            bot.motorRF.setPower(Range.clip((y-x-z)/2,-1,1));
-            bot.motorRB.setPower(Range.clip((y+x-z)/2,-1,1));
-            bot.motorLB.setPower(Range.clip((-y+x-z)/2,-1,1));
+            bot.motorLF.setPower(Range.clip((y-x-z),-1,1));
+            bot.motorRF.setPower(Range.clip((-y-x-z),-1,1));
+            bot.motorRB.setPower(Range.clip((y+x-z),-1,1));
+            bot.motorLB.setPower(Range.clip((-y+x-z),-1,1));
 
             checkVu();
 

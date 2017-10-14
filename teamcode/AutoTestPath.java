@@ -18,6 +18,6 @@ public class AutoTestPath extends Processor{
 
         faceImage();
         checkVu();
-        goToTarget(0,-5);
+        go(-300,-500);
     }
 }

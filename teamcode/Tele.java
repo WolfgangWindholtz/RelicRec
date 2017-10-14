@@ -22,11 +22,11 @@ public class Tele extends OpMode{
     @Override
     public void loop() {
         zpow = gamepad1.right_stick_x;//direction not actually
-        ypow = gamepad1.left_stick_y;// variable names are incoorect
+        ypow = -gamepad1.left_stick_y;// variable names are incoorect
         xpow = gamepad1.left_stick_x;
 
-        robot.motorLF.setPower(-ypow-xpow-zpow);
-        robot.motorRF.setPower(ypow-xpow-zpow);
+        robot.motorLF.setPower(ypow-xpow-zpow);
+        robot.motorRF.setPower(-ypow-xpow-zpow);
         robot.motorRB.setPower(ypow+xpow-zpow);
         robot.motorLB.setPower(-ypow+xpow-zpow);
 
