@@ -154,7 +154,7 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLB.setPower(0);
     }
 
-    public void go(double targetY, double targetZ){
+    public void go(double targetX, double targetZ) {
         double a;
         double b;
         double c;
@@ -164,42 +164,45 @@ public abstract class Processor extends LinearOpMode {
         double z;
         double angleV1;
 
-        double powerCorrection;
-        a = targetY - bot.tY;
+        a = targetX - bot.tX;
         b = targetZ - bot.tZ;
 
         double p = .01; //correction factor;
         bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        while(Math.abs(a)>(10)|| Math.abs(b)>(10)){
-            a = targetY - bot.tY;
+        while (Math.abs(a) > (50) || Math.abs(b) > (50)) {
+            a = targetX - bot.tX;
             b = targetZ - bot.tZ;
-            c = Math.sqrt(a*a+b*b);
+            c = Math.sqrt(a * a + b * b);
 
-            powerCorrection = c*.001;
+            angleV1 = Math.atan((bot.tX / bot.tZ));
 
-            angleV1 = Math.atan((bot.tY/bot.tZ));
+            y = b / c;
+            x = a / c;
+            z = p * ((bot.rY * Math.PI / 180) + (angleV1));
 
-            y = -a/c;
-            x= b/c;
-            z= p*((bot.rY*Math.PI/180)-(angleV1));
+            bot.motorLF.setPower(Range.clip((-y - x - z) / 2, -1, 1));
+            bot.motorRF.setPower(Range.clip((y - x - z) / 2, -1, 1));
+            bot.motorRB.setPower(Range.clip((y + x - z) / 2, -1, 1));
+            bot.motorLB.setPower(Range.clip((-y + x - z) / 2, -1, 1));
 
-            bot.motorLF.setPower(Range.clip((y-x-z),-1,1));
-            bot.motorRF.setPower(Range.clip((-y-x-z),-1,1));
-            bot.motorRB.setPower(Range.clip((y+x-z),-1,1));
-            bot.motorLB.setPower(Range.clip((-y+x-z),-1,1));
+            telemetry.addData("a%f", a);
+            telemetry.addData("bot X", bot.tX);
+            telemetry.addData("target X", targetX);
+            telemetry.addData("target X - bot X", targetX - bot.tX);
+            telemetry.addData("b%f", b);
+            telemetry.addData("bot Z", bot.tZ);
+            telemetry.addData("target Z", targetZ);
+            telemetry.addData("target Z - bot Z", targetZ - bot.tZ);
+            telemetry.addData("c%f", c);
+            telemetry.addData("x%f", x);
+            telemetry.addData("y%f", y);
+            telemetry.addData("angleV1%f", angleV1);
+
 
             checkVu();
 
-            if (Math.abs(a)<(10)&& Math.abs(b)<(10)){
-                break;
-            }
+
         }
-
-        bot.motorLF.setPower(0);
-        bot.motorRF.setPower(0);
-        bot.motorRB.setPower(0);
-        bot.motorLB.setPower(0);
-
     }
 
         public void goToTarget(double x, double y)
