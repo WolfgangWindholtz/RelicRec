@@ -180,10 +180,10 @@ public abstract class Processor extends LinearOpMode {
             x = a / c;
             z = p * ((bot.rY * Math.PI / 180) + (angleV1));
 
-            bot.motorLF.setPower(Range.clip((-y - x - z) / 2, -1, 1));
-            bot.motorRF.setPower(Range.clip((y - x - z) / 2, -1, 1));
-            bot.motorRB.setPower(Range.clip((y + x - z) / 2, -1, 1));
-            bot.motorLB.setPower(Range.clip((-y + x - z) / 2, -1, 1));
+            bot.motorLF.setPower(Range.clip((-y - x ) / 2.81, -1, 1));
+            bot.motorRF.setPower(Range.clip((y - x ) / 2.81, -1, 1));
+            bot.motorRB.setPower(Range.clip((y + x ) / 2.81, -1, 1));
+            bot.motorLB.setPower(Range.clip((-y + x ) / 2.81, -1, 1));
 
             telemetry.addData("a%f", a);
             telemetry.addData("bot X", bot.tX);
@@ -246,6 +246,44 @@ public abstract class Processor extends LinearOpMode {
 
             }
         }
+
+    public void stayFocus() {
+        double a;
+        double b;
+        double c;
+
+        double y;
+        double z;
+
+        double angleV1;
+
+
+        double p = 1; //correction factor;
+        bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
+        while (true) {
+
+            angleV1 = Math.atan((bot.tX / bot.tZ));
+
+            z = p * ((bot.rY * Math.PI / 180) + (angleV1));
+
+            bot.motorLF.setPower(Range.clip((z) / 2.81, -1, 1));
+            bot.motorRF.setPower(Range.clip((z) / 2.81, -1, 1));
+            bot.motorRB.setPower(Range.clip((z ) / 2.81, -1, 1));
+            bot.motorLB.setPower(Range.clip((z ) / 2.81, -1, 1));
+
+            telemetry.addData("bot X", bot.tX);
+            telemetry.addData("bot Z", bot.tZ);
+            telemetry.addData("z", z);
+
+            telemetry.addData("angleV1%f", angleV1);
+
+
+            checkVu();
+
+
+        }
+    }
+
 
 
 }
