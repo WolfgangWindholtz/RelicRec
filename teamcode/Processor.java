@@ -203,6 +203,11 @@ public abstract class Processor extends LinearOpMode {
 
 
         }
+        bot.motorLF.setPower(Range.clip((0) / 2.81, -1, 1));
+        bot.motorRF.setPower(Range.clip((0) / 2.81, -1, 1));
+        bot.motorRB.setPower(Range.clip((0 ) / 2.81, -1, 1));
+        bot.motorLB.setPower(Range.clip((0) / 2.81, -1, 1));
+
     }
 
         public void goToTarget(double x, double y)
